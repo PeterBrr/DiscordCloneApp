@@ -17,4 +17,13 @@ public class ServerViewModel extends ViewModel {
 
     private final MutableLiveData<List<Server>> _servers = new MutableLiveData<>(MockData.getServers());
     public LiveData<List<Server>> getServers() { return _servers; }
+
+    public void addMessage(ChatMessage message) {
+        List<ChatMessage> current = _messages.getValue();
+        if (current != null) {
+            java.util.ArrayList<ChatMessage> updated = new java.util.ArrayList<>(current);
+            updated.add(message);
+            _messages.setValue(updated);
+        }
+    }
 }

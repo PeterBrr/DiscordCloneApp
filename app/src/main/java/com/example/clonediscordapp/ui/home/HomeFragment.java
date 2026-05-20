@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -48,6 +49,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onMessageClick(com.example.clonediscordapp.data.model.DirectMessage message) {
                 // Navigate to chat (not implemented yet)
+                Toast.makeText(requireContext(), "Opening chat with " + message.getUser().getName(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -58,6 +60,30 @@ public class HomeFragment extends Fragment {
         });
         binding.rvDirectMessages.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.rvDirectMessages.setAdapter(dmAdapter);
+
+        // Sidebar Home Button Click
+        binding.btnSidebarHome.setOnClickListener(v -> 
+            Toast.makeText(requireContext(), "Already on Home / Direct Messages", Toast.LENGTH_SHORT).show()
+        );
+
+        // Search Box Click
+        binding.btnSearchContainer.setOnClickListener(v -> 
+            Toast.makeText(requireContext(), "Opening Quick Switcher search panel...", Toast.LENGTH_SHORT).show()
+        );
+
+        // Create Chat Clicks
+        binding.btnAddChat.setOnClickListener(v -> 
+            Toast.makeText(requireContext(), "Starting new group direct message...", Toast.LENGTH_SHORT).show()
+        );
+
+        binding.btnNewDm.setOnClickListener(v -> 
+            Toast.makeText(requireContext(), "Starting new direct message...", Toast.LENGTH_SHORT).show()
+        );
+
+        // Friends Shortcut Click
+        binding.btnFriendsShortcut.setOnClickListener(v -> 
+            Toast.makeText(requireContext(), "Navigating to Friends List (4 online)...", Toast.LENGTH_SHORT).show()
+        );
 
         // Observe Data
         viewModel.getServers().observe(getViewLifecycleOwner(), serverAdapter::submitList);

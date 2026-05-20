@@ -1,57 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_participant"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="170dp"
     android:layout_margin="6dp"
     android:background="@drawable/bg_voice_participant">
 
-    <!-- Avatar container to allow green ring -->
+    <!-- Center Avatar Container -->
     <FrameLayout
         android:id="@+id/avatar_container"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="24dp"
+        android:layout_width="88dp"
+        android:layout_height="88dp"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
-        
+
         <ImageView
             android:id="@+id/iv_avatar"
-            android:layout_width="68dp"
-            android:layout_height="68dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_gravity="center"
-            android:background="@drawable/bg_circle_dark" />
+            android:src="@drawable/ic_tab_profile"
+            android:background="@drawable/bg_circle_dark"
+            android:backgroundTint="@color/discord_dark_base" />
     </FrameLayout>
-    
-    <TextView
-        android:id="@+id/tv_name"
+
+    <!-- Translucent glassmorphic bottom-left Name Tag -->
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="24dp"
-        android:textColor="@color/discord_text_secondary"
-        android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@id/avatar_container"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="4dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/bg_rounded_deep"
+        android:backgroundTint="#80000000"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-        
-    <FrameLayout
-        android:id="@+id/fl_mute_indicator"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_margin="8dp"
-        android:background="@drawable/bg_circle_red_bordered"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <!-- Active video green dot -->
+        <View
+            android:id="@+id/v_speaking_dot"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:layout_marginEnd="6dp"
+            android:background="@drawable/bg_circle_red"
+            android:backgroundTint="@color/discord_green"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/discord_text_primary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text="Valkyrie" />
+    </LinearLayout>
+
+    <!-- Bottom-Right Status Indicator Badges Container -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
-        
-        <ImageView
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_gravity="center"
-            android:src="@android:drawable/ic_btn_speak_now"
-            app:tint="@android:color/white" />
-    </FrameLayout>
+
+        <!-- Video Active Icon Badge -->
+        <FrameLayout
+            android:id="@+id/fl_video_indicator"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/bg_circle_dark"
+            android:backgroundTint="@color/discord_blurple"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_voice_video"
+                app:tint="@android:color/white" />
+        </FrameLayout>
+
+        <!-- Screen Share Active Icon Badge -->
+        <FrameLayout
+            android:id="@+id/fl_screen_indicator"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/bg_circle_dark"
+            android:backgroundTint="@color/discord_green"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_voice_screen_share"
+                app:tint="@android:color/white" />
+        </FrameLayout>
+
+        <!-- Red Mute Icon Badge -->
+        <FrameLayout
+            android:id="@+id/fl_mute_indicator"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/bg_circle_red_bordered">
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_voice_mic_off"
+                app:tint="@android:color/white" />
+        </FrameLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -39,7 +39,9 @@ public class MainActivity extends AppCompatActivity {
             NavigationUI.setupWithNavController(binding.bottomNav, navController);
             
             navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-                if (destination.getId() == R.id.nav_home) {
+                if (destination.getId() == R.id.nav_home ||
+                        destination.getId() == R.id.nav_notifications ||
+                        destination.getId() == R.id.nav_profile) {
                     binding.bottomNav.setVisibility(View.VISIBLE);
                 } else {
                     binding.bottomNav.setVisibility(View.GONE);

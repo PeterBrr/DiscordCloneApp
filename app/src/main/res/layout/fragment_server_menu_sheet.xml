@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_rounded_deep"
+    android:backgroundTint="@color/discord_dark_floating"
+    android:padding="16dp">
+
+    <!-- Bottom Sheet Drag Handle -->
+    <View
+        android:layout_width="36dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/discord_divider"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Server Name Header -->
+    <TextView
+        android:id="@+id/tv_menu_server_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fantasy World"
+        android:textColor="@color/discord_text_primary"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="4dp" />
+
+    <!-- Server Tag/URL -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FantasyWorldServerID: s1"
+        android:textColor="@color/discord_text_muted"
+        android:textSize="12sp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="20dp" />
+
+    <!-- Menu Items Rows -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- 1. Server Settings Row -->
+        <LinearLayout
+            android:id="@+id/btn_menu_server_settings"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="12dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/bg_rounded_deep"
+            android:backgroundTint="@color/discord_dark_base"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/ic_settings"
+                app:tint="@color/discord_text_primary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="Server Settings"
+                android:textColor="@color/discord_text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- 2. Channel Settings Row -->
+        <LinearLayout
+            android:id="@+id/btn_menu_channel_settings"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="12dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/bg_rounded_deep"
+            android:backgroundTint="@color/discord_dark_base"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@android:drawable/ic_menu_edit"
+                app:tint="@color/discord_text_primary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="Channel Settings"
+                android:textColor="@color/discord_text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- 3. Invite People Row -->
+        <LinearLayout
+            android:id="@+id/btn_menu_invite"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="12dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/bg_rounded_deep"
+            android:backgroundTint="@color/discord_dark_base"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@android:drawable/ic_menu_add"
+                app:tint="@color/discord_blurple" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="Invite People"
+                android:textColor="@color/discord_blurple"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/discord_divider"
+            android:layout_marginVertical="8dp" />
+
+        <!-- 4. Leave Server Row -->
+        <LinearLayout
+            android:id="@+id/btn_menu_leave"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="12dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_rounded_deep"
+            android:backgroundTint="@color/discord_dark_base"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                app:tint="@color/discord_red" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="Leave Server"
+                android:textColor="@color/discord_red"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

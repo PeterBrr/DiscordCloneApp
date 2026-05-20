@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Selected tab is White -->
+    <item android:state_checked="true" android:color="#FFFFFF" />
+    <!-- Default/Unselected tab is Muted Gray -->
+    <item android:color="@color/discord_text_muted" />
+</selector>

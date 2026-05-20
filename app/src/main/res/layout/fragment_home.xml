@@ -1,60 +1,248 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:background="@color/discord_dark_base">
 
-    <!-- Server Sidebar -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_servers"
+    <!-- Left Sidebar (Servers Column) -->
+    <LinearLayout
         android:layout_width="72dp"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:background="@color/discord_dark_deep"
         android:paddingTop="12dp"
-        android:paddingBottom="12dp"
-        android:clipToPadding="false" />
+        android:gravity="center_horizontal">
 
-    <!-- Content Area -->
+        <!-- Home / Direct Messages Button (Active Screen) -->
+        <FrameLayout
+            android:id="@+id/btn_sidebar_home"
+            android:layout_width="72dp"
+            android:layout_height="56dp">
+
+            <!-- Active Indicator Pill on Left Edge -->
+            <View
+                android:layout_width="4dp"
+                android:layout_height="36dp"
+                android:layout_gravity="start|center_vertical"
+                android:background="@android:color/white" />
+
+            <!-- Rounded square icon matching Discord active state shape -->
+            <FrameLayout
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_rounded_deep"
+                android:backgroundTint="@color/discord_blurple"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_tab_servers"
+                    app:tint="@android:color/white" />
+            </FrameLayout>
+        </FrameLayout>
+
+        <!-- Divider separating Home button from other servers -->
+        <View
+            android:layout_width="32dp"
+            android:layout_height="2dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/discord_divider"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Scrollable Server list -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_servers"
+            android:layout_width="72dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:clipToPadding="false"
+            android:paddingBottom="12dp" />
+
+    </LinearLayout>
+
+    <!-- Right Content Area (Direct Messages and Actions) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@color/discord_dark_base">
 
-        <!-- Header -->
-        <FrameLayout
+        <!-- Sleek Search Toolbar -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="@color/discord_dark_base"
-            android:paddingHorizontal="16dp">
-            
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="Messages"
-                android:textColor="@color/discord_text_primary"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-                
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:gravity="center_vertical"
+            android:background="@color/discord_dark_base">
+
+            <!-- Search Container -->
+            <LinearLayout
+                android:id="@+id/btn_search_container"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="36dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="12dp"
+                android:background="@drawable/bg_rounded_deep"
+                android:backgroundTint="@color/discord_dark_deep"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@android:drawable/ic_menu_search"
+                    app:tint="@color/discord_text_muted" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Find or start a conversation"
+                    android:textColor="@color/discord_text_muted"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <!-- Create DM Icon -->
             <ImageView
-                android:id="@+id/btn_add_friend"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center_vertical|end"
+                android:id="@+id/btn_add_chat"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="12dp"
+                android:padding="8dp"
                 android:src="@android:drawable/ic_menu_add"
                 app:tint="@color/discord_text_muted"
-                xmlns:app="http://schemas.android.com/apk/res-auto" />
-        </FrameLayout>
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true" />
+        </LinearLayout>
 
-        <!-- Direct Messages List -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_direct_messages"
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/discord_divider" />
+
+        <!-- Scrollable DM list and Quick options -->
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="8dp"
-            android:clipToPadding="false" />
+            android:fillViewport="true"
+            android:clipToPadding="false"
+            android:paddingBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Friends Shortcut Row -->
+                <LinearLayout
+                    android:id="@+id/btn_friends_shortcut"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="16dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <FrameLayout
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_circle_dark"
+                        android:backgroundTint="@color/discord_dark_alt"
+                        android:padding="8dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@android:drawable/ic_menu_myplaces"
+                            app:tint="@android:color/white" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:text="Friends"
+                        android:textColor="@color/discord_text_primary"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <!-- Online Friends Capsule Badge -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4 Online"
+                        android:textColor="@color/discord_green"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="4dp"
+                        android:background="@drawable/bg_rounded_deep"
+                        android:backgroundTint="#1C2B24" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/discord_divider"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- DIRECT MESSAGES Category Sub-Header -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="16dp"
+                    android:layout_marginBottom="6dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="DIRECT MESSAGES"
+                        android:textColor="@color/discord_text_muted"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.05" />
+
+                    <ImageView
+                        android:id="@+id/btn_new_dm"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:padding="2dp"
+                        android:src="@android:drawable/ic_menu_add"
+                        app:tint="@color/discord_text_muted"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:focusable="true" />
+                </LinearLayout>
+
+                <!-- DMs RecyclerView -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_direct_messages"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:background="@android:color/transparent" />
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
     </LinearLayout>
 
