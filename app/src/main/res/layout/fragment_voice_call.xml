@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/discord_dark_deep">
+
+    <!-- Header -->
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent">
+        
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="General Voice"
+            android:textColor="@color/discord_green"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+            
+        <ImageView
+            android:id="@+id/btn_minimize"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:padding="8dp"
+            android:src="@android:drawable/arrow_down_float"
+            app:tint="@color/discord_text_muted" />
+    </LinearLayout>
+
+    <!-- Voice Participants Grid -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_voice_participants"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:padding="12dp"
+        android:clipToPadding="false"
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintBottom_toTopOf="@id/controls_container" />
+
+    <!-- Controls Container -->
+    <LinearLayout
+        android:id="@+id/controls_container"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="@color/discord_dark_deep"
+        app:layout_constraintBottom_toBottomOf="parent">
+        
+        <!-- Deafen -->
+        <FrameLayout
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/bg_circle_dark">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:src="@android:drawable/ic_lock_silent_mode_off"
+                app:tint="@android:color/white" />
+        </FrameLayout>
+        
+        <!-- Mute -->
+        <FrameLayout
+            android:id="@+id/btn_mute"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/bg_circle_dark">
+            <ImageView
+                android:id="@+id/iv_mute_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:src="@android:drawable/ic_btn_speak_now"
+                app:tint="@android:color/white" />
+        </FrameLayout>
+        
+        <!-- End Call -->
+        <FrameLayout
+            android:id="@+id/btn_end_call"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="@drawable/bg_circle_red">
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                app:tint="@android:color/white" />
+        </FrameLayout>
+        
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

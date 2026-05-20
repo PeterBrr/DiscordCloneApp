@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:background="@color/discord_dark_base">
+
+    <!-- Server Sidebar -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_servers"
+        android:layout_width="72dp"
+        android:layout_height="match_parent"
+        android:background="@color/discord_dark_deep"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:clipToPadding="false" />
+
+    <!-- Content Area -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/discord_dark_main">
+
+        <!-- Header -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/discord_dark_main"
+            android:paddingHorizontal="16dp">
+            
+            <TextView
+                android:id="@+id/tv_channel_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="# general-chat"
+                android:textColor="@color/discord_text_primary"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+                
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/discord_dark_base" />
+
+        <!-- Voice Call Join Banner -->
+        <LinearLayout
+            android:id="@+id/banner_voice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/discord_dark_alt"
+            android:padding="12dp"
+            android:gravity="center_vertical">
+            
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="General Voice"
+                android:textColor="@color/discord_green"
+                android:textStyle="bold" />
+                
+            <Button
+                android:id="@+id/btn_join_voice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Join"
+                android:backgroundTint="@color/discord_green"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+        <!-- Chat Messages List -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_chat_messages"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingVertical="8dp"
+            android:clipToPadding="false" />
+
+        <!-- Message Input -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:background="@color/discord_dark_main"
+            android:gravity="center_vertical">
+            
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:padding="8dp"
+                android:src="@android:drawable/ic_menu_add"
+                app:tint="@color/discord_text_muted"
+                android:background="@drawable/bg_circle_dark" />
+                
+            <EditText
+                android:id="@+id/et_message"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="8dp"
+                android:background="@drawable/bg_message_input"
+                android:hint="Message #general-chat"
+                android:textColorHint="@color/discord_text_muted"
+                android:textColor="@color/discord_text_primary"
+                android:padding="12dp" />
+                
+            <ImageView
+                android:id="@+id/btn_send"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:padding="8dp"
+                android:src="@android:drawable/ic_menu_send"
+                app:tint="@color/discord_blurple" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

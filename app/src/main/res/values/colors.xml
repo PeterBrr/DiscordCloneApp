@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="discord_blurple">#5865F2</color>
+    <color name="discord_blurple_pressed">#4752C4</color>
+    <color name="discord_green">#23A559</color>
+    <color name="discord_red">#DA373C</color>
+    
+    <color name="discord_dark_base">#1E1F22</color>
+    <color name="discord_dark_main">#313338</color>
+    <color name="discord_dark_alt">#2B2D31</color>
+    <color name="discord_dark_elevated">#232428</color>
+    <color name="discord_dark_deep">#111214</color>
+    <color name="discord_dark_floating">#2B2D31</color>
+    
+    <color name="discord_text_primary">#F2F3F5</color>
+    <color name="discord_text_secondary">#B5BAC1</color>
+    <color name="discord_text_muted">#949BA4</color>
+    
+    <color name="discord_divider">#3E4047</color>
+    <color name="discord_border_dark">#1E1F22</color>
+</resources>
