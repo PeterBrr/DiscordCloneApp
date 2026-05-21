@@ -1,34 +1,45 @@
 {
   "project_info": {
-    "project_number": "123456789012",
+    "project_number": "554791499535",
     "firebase_url": "https://calling-app-5374e-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "calling-app-5374e",
-    "storage_bucket": "calling-app-5374e.appspot.com"
+    "storage_bucket": "calling-app-5374e.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:123456789012:android:abcdef1234567890",
+        "mobilesdk_app_id": "1:554791499535:android:454a224f5b0c4ea6c0b07a",
         "android_client_info": {
           "package_name": "com.example.clonediscordapp"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "554791499535-mnmof4999ki43deo6rpgp8jkmmif1qgg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.se114_callingsystem",
+            "certificate_hash": "be746750d6365a97f46bfa985d783d52932c3c0c"
+          }
+        },
+        {
+          "client_id": "554791499535-2756h3j289803tbddgc1cun29t8e5n6i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "dummy_api_key_for_compilation_verification"
+          "current_key": "AIzaSyBJrdtyfvAR4lysXA1ZpaleJLcH3uokVhU"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 1
+          "other_platform_oauth_client": [
+            {
+              "client_id": "554791499535-2756h3j289803tbddgc1cun29t8e5n6i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
