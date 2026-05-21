@@ -137,7 +137,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="\"Yes! 8 PM EST. Make sure you bring enough potions this time... \uD83E\uDD23\""
+                        android:text="Yes! 8 PM EST. Make sure you bring enough potions this time... \uD83E\uDD23\"
                         android:textColor="@color/discord_text_secondary"
                         android:textSize="13sp"
                         android:ellipsize="end"

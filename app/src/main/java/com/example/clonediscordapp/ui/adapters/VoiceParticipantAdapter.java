@@ -1,56 +1,68 @@
 package com.example.clonediscordapp.ui.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.example.clonediscordapp.data.model.User;
+import com.example.clonediscordapp.R;
+import com.example.clonediscordapp.data.model.Participant;
 import com.example.clonediscordapp.databinding.ItemVoiceParticipantBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.agora.rtc2.Constants;
+import io.agora.rtc2.RtcEngine;
+import io.agora.rtc2.video.VideoCanvas;
+
 public class VoiceParticipantAdapter extends RecyclerView.Adapter<VoiceParticipantAdapter.ViewHolder> {
 
-    private List<User> participants = new ArrayList<>();
-    private boolean isMeMuted = false;
-    private boolean isMeVideoOn = false;
-    private boolean isMeScreenOn = false;
+    private List<Participant> participants = new ArrayList<>();
+    private RtcEngine rtcEngine;
 
-    public void submitList(List<User> list) {
-        this.participants = list;
+    public void submitList(List<Participant> list) {
+        this.participants = new ArrayList<>(list);
         notifyDataSetChanged();
     }
 
-    public void setMeMuted(boolean isMuted) {
-        this.isMeMuted = isMuted;
-        notifyDataSetChanged();
-    }
-
-    public void setMeVideoOn(boolean isVideoOn) {
-        this.isMeVideoOn = isVideoOn;
-        notifyDataSetChanged();
-    }
-
-    public void setMeScreenOn(boolean isScreenOn) {
-        this.isMeScreenOn = isScreenOn;
+    public void setRtcEngine(RtcEngine rtcEngine) {
+        this.rtcEngine = rtcEngine;
         notifyDataSetChanged();
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemVoiceParticipantBinding binding = ItemVoiceParticipantBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        ItemVoiceParticipantBinding binding = ItemVoiceParticipantBinding.inflate(
+                LayoutInflater.from(parent.getContext()), parent, false);
         return new ViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bind(participants.get(position));
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull List<Object> payloads) {
+        if (!payloads.isEmpty()) {
+            String payload = payloads.get(0).toString();
+            Participant participant = participants.get(position);
+
+            if (payload.equals("border_update")) {
+                holder.updateSpeakingBorder(participant.isSpeaking);
+                return;
+            } else if (payload.equals("state_update")) {
+                holder.updateState(participant);
+                return;
+            }
+        }
+        super.onBindViewHolder(holder, position, payloads);
     }
 
     @Override
@@ -66,54 +78,53 @@ public class VoiceParticipantAdapter extends RecyclerView.Adapter<VoiceParticipa
             this.binding = binding;
         }
 
-        public void bind(User user) {
-            Glide.with(itemView.getContext())
-                    .load(user.getAvatarUrl())
-                    .circleCrop()
-                    .into(binding.ivAvatar);
+        public void bind(Participant participant) {
+            Context context = itemView.getContext();
+            binding.tvName.setText(participant.name);
 
-            binding.tvName.setText(user.getName());
-            
-            boolean isSpeaking = false;
-            boolean isMuted = false;
-            boolean isVideoActive = false;
-            boolean isScreenSharing = false;
+            // Clean old views first to prevent overlapping layers
+            binding.videoContainer.removeAllViews();
 
-            if (user.getId().equals("u0")) { // "Me" user profile
-                isMuted = isMeMuted;
-                isVideoActive = isMeVideoOn;
-                isScreenSharing = isMeScreenOn;
-                isSpeaking = !isMeMuted; // Speaking if not muted
-            } else if (user.getId().equals("u1")) { // Valkyrie
-                isSpeaking = true; // Active speaker speaking ring
-                isMuted = false;
-                isVideoActive = false;
-                isScreenSharing = false;
-            } else if (user.getId().equals("u2")) { // Nova
-                isSpeaking = false;
-                isMuted = true;
-                isVideoActive = true; // Video active badge
-                isScreenSharing = false;
-            } else { // Doggo
-                isSpeaking = false;
-                isMuted = false;
-                isVideoActive = false;
-                isScreenSharing = true; // Screen share active badge
+            // Set up video rendering
+            if (rtcEngine != null && !participant.isVideoOff) {
+                SurfaceView surfaceView = new SurfaceView(context);
+                binding.videoContainer.addView(surfaceView);
+
+                if (participant.name.equals("Màn hình của tôi")) {
+                    VideoCanvas canvas = new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, 0);
+                    canvas.sourceType = Constants.VIDEO_SOURCE_SCREEN_PRIMARY;
+                    rtcEngine.setupLocalVideo(canvas);
+                    rtcEngine.startPreview(Constants.VideoSourceType.VIDEO_SOURCE_SCREEN_PRIMARY);
+                } else if (participant.name.contains("Me")) {
+                    surfaceView.setZOrderMediaOverlay(true);
+                    rtcEngine.setupLocalVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_HIDDEN, 0));
+                } else {
+                    surfaceView.setZOrderMediaOverlay(true);
+                    int renderMode = (participant.uid >= 1000) ? VideoCanvas.RENDER_MODE_FIT : VideoCanvas.RENDER_MODE_HIDDEN;
+                    rtcEngine.setupRemoteVideo(new VideoCanvas(surfaceView, renderMode, participant.uid));
+                }
             }
 
-            // Speak border background outline and name tag dot change
+            updateState(participant);
+            updateSpeakingBorder(participant.isSpeaking);
+        }
+
+        public void updateState(Participant participant) {
+            binding.videoContainer.setVisibility(participant.isVideoOff ? View.GONE : View.VISIBLE);
+            binding.avatarContainer.setVisibility(participant.isVideoOff ? View.VISIBLE : View.GONE);
+            binding.flMuteIndicator.setVisibility(participant.isMuted ? View.VISIBLE : View.GONE);
+            binding.flVideoIndicator.setVisibility(!participant.isVideoOff ? View.VISIBLE : View.GONE);
+            binding.flScreenIndicator.setVisibility(participant.isSharingScreen ? View.VISIBLE : View.GONE);
+        }
+
+        public void updateSpeakingBorder(boolean isSpeaking) {
             if (isSpeaking) {
-                binding.cardParticipant.setBackgroundResource(com.example.clonediscordapp.R.drawable.bg_voice_participant_speaking);
+                binding.cardParticipant.setBackgroundResource(R.drawable.bg_voice_participant_speaking);
                 binding.vSpeakingDot.setVisibility(View.VISIBLE);
             } else {
-                binding.cardParticipant.setBackgroundResource(com.example.clonediscordapp.R.drawable.bg_voice_participant);
+                binding.cardParticipant.setBackgroundResource(R.drawable.bg_voice_participant);
                 binding.vSpeakingDot.setVisibility(View.GONE);
             }
-
-            // Bind status badges visibility
-            binding.flMuteIndicator.setVisibility(isMuted ? View.VISIBLE : View.GONE);
-            binding.flVideoIndicator.setVisibility(isVideoActive ? View.VISIBLE : View.GONE);
-            binding.flScreenIndicator.setVisibility(isScreenSharing ? View.VISIBLE : View.GONE);
         }
     }
 }

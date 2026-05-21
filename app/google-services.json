@@ -1,0 +1,37 @@
+{
+  "project_info": {
+    "project_number": "123456789012",
+    "firebase_url": "https://calling-app-5374e-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "calling-app-5374e",
+    "storage_bucket": "calling-app-5374e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123456789012:android:abcdef1234567890",
+        "android_client_info": {
+          "package_name": "com.example.clonediscordapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "dummy_api_key_for_compilation_verification"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

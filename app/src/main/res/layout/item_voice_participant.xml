@@ -8,6 +8,13 @@
     android:layout_margin="6dp"
     android:background="@drawable/bg_voice_participant">
 
+    <!-- Video Container -->
+    <FrameLayout
+        android:id="@+id/videoContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
     <!-- Center Avatar Container -->
     <FrameLayout
         android:id="@+id/avatar_container"

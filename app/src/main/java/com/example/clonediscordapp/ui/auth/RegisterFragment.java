@@ -2,8 +2,6 @@ package com.example.clonediscordapp.ui.auth;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
@@ -18,15 +16,22 @@ import androidx.navigation.Navigation;
 
 import com.example.clonediscordapp.R;
 import com.example.clonediscordapp.databinding.FragmentRegisterBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class RegisterFragment extends Fragment {
 
     private FragmentRegisterBinding binding;
     private boolean isPasswordVisible = false;
     private String selectedDob = "";
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     @Nullable
     @Override
@@ -38,6 +43,9 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         // 1. Password Visibility Toggle
         binding.btnRegPasswordToggle.setOnClickListener(v -> {
@@ -81,7 +89,7 @@ public class RegisterFragment extends Fragment {
             pickerDialog.show();
         });
 
-        // 4. Continue/Register Button with validations and loader latency simulator
+        // 4. Continue/Register Button with validations via Firebase Auth
         binding.btnRegister.setOnClickListener(v -> {
             String email = binding.etRegEmail.getText().toString().trim();
             String username = binding.etRegUsername.getText().toString().trim();
@@ -96,8 +104,8 @@ public class RegisterFragment extends Fragment {
                 Toast.makeText(requireContext(), "Username cannot be empty!", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (password.isEmpty()) {
-                Toast.makeText(requireContext(), "Password cannot be empty!", Toast.LENGTH_SHORT).show();
+            if (password.isEmpty() || password.length() < 6) {
+                Toast.makeText(requireContext(), "Password must be at least 6 characters!", Toast.LENGTH_SHORT).show();
                 return;
             }
             if (selectedDob.isEmpty()) {
@@ -114,17 +122,54 @@ public class RegisterFragment extends Fragment {
             binding.btnRegister.setText(""); // Hide text
             binding.pbRegLoading.setVisibility(View.VISIBLE);
 
-            // Simulate server network registration processing delay
-            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                if (getContext() == null) return;
+            mAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(requireActivity(), task -> {
+                        if (getContext() == null) return;
 
-                // Success Feedback
-                Toast.makeText(requireContext(), "Account created successfully! Welcome, " + username + "! 🎉🎮", Toast.LENGTH_LONG).show();
-
-                // Navigate directly to Home Fragment (DMs list)
-                Navigation.findNavController(view).navigate(R.id.action_register_to_home);
-            }, 1500);
+                        if (task.isSuccessful()) {
+                            FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                            saveUserToFirestore(firebaseUser, username, view);
+                        } else {
+                            binding.btnRegister.setEnabled(true);
+                            binding.btnRegister.setText("Register");
+                            binding.pbRegLoading.setVisibility(View.GONE);
+                            String error = task.getException() != null ? task.getException().getMessage() : "Unknown error";
+                            Toast.makeText(requireContext(), "Registration failed: " + error, Toast.LENGTH_LONG).show();
+                        }
+                    });
         });
+    }
+
+    private void saveUserToFirestore(FirebaseUser user, String username, View view) {
+        if (user == null) return;
+
+        String uid = user.getUid();
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("userId", uid);
+        userData.put("username", username);
+        userData.put("email", user.getEmail());
+        userData.put("profilePic", "");
+        userData.put("status", "online");
+        userData.put("aboutMe", "Hey, I'm new to CloneDiscord!");
+
+        db.collection("users").document(uid).set(userData)
+                .addOnSuccessListener(aVoid -> {
+                    if (getContext() == null) return;
+                    binding.btnRegister.setEnabled(true);
+                    binding.btnRegister.setText("Register");
+                    binding.pbRegLoading.setVisibility(View.GONE);
+
+                    Toast.makeText(requireContext(), "Account created successfully! Welcome, " + username + "! 🎉🎮", Toast.LENGTH_LONG).show();
+                    Navigation.findNavController(view).navigate(R.id.action_register_to_home);
+                })
+                .addOnFailureListener(e -> {
+                    if (getContext() == null) return;
+                    binding.btnRegister.setEnabled(true);
+                    binding.btnRegister.setText("Register");
+                    binding.pbRegLoading.setVisibility(View.GONE);
+
+                    Toast.makeText(requireContext(), "Failed to save user details to Firestore: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                });
     }
 
     @Override

@@ -1,8 +1,6 @@
 package com.example.clonediscordapp.ui.auth;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
@@ -17,11 +15,13 @@ import androidx.navigation.Navigation;
 
 import com.example.clonediscordapp.R;
 import com.example.clonediscordapp.databinding.FragmentLoginBinding;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginFragment extends Fragment {
 
     private FragmentLoginBinding binding;
     private boolean isPasswordVisible = false;
+    private FirebaseAuth mAuth;
 
     @Nullable
     @Override
@@ -33,6 +33,14 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        // If user is already logged in, navigate straight to home
+        if (mAuth.getCurrentUser() != null) {
+            Navigation.findNavController(view).navigate(R.id.action_login_to_home);
+            return;
+        }
 
         // Pre-fill credentials for instant testing convenience
         binding.etEmail.setText("guest@discord.com");
@@ -66,7 +74,7 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        // 4. Login Action Trigger with network mock progress bar simulator
+        // 4. Login Action Trigger via Firebase Auth
         binding.btnLogin.setOnClickListener(v -> {
             String email = binding.etEmail.getText().toString().trim();
             String password = binding.etPassword.getText().toString().trim();
@@ -81,16 +89,21 @@ public class LoginFragment extends Fragment {
             binding.btnLogin.setText(""); // Hide text during progress
             binding.pbLoginLoading.setVisibility(View.VISIBLE);
 
-            // Delay 1.5 seconds to simulate API latency
-            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                if (getContext() == null) return;
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(requireActivity(), task -> {
+                        if (getContext() == null) return;
+                        binding.btnLogin.setEnabled(true);
+                        binding.btnLogin.setText("Log In"); // Restore text
+                        binding.pbLoginLoading.setVisibility(View.GONE);
 
-                // Toast success
-                Toast.makeText(requireContext(), "Welcome back! Logged in as " + email + " 👾🎮", Toast.LENGTH_SHORT).show();
-
-                // Navigate to Main DMs/Home Fragment
-                Navigation.findNavController(view).navigate(R.id.action_login_to_home);
-            }, 1500);
+                        if (task.isSuccessful()) {
+                            Toast.makeText(requireContext(), "Welcome back! Logged in as " + email + " 👾🎮", Toast.LENGTH_SHORT).show();
+                            Navigation.findNavController(view).navigate(R.id.action_login_to_home);
+                        } else {
+                            String errorMsg = task.getException() != null ? task.getException().getMessage() : "Unknown error";
+                            Toast.makeText(requireContext(), "Auth failed: " + errorMsg, Toast.LENGTH_LONG).show();
+                        }
+                    });
         });
     }
 
